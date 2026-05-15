@@ -16,7 +16,7 @@ Spring Boot application responsible for user authentication and session manageme
 - [x] Login configuration
 - [x] Protected dashboard page
 - [x] Session counter
-- [ ] Redis-based session storage
+- [x] Redis-based session storage
 
 ### Implemented backend endpoints
 
@@ -24,7 +24,7 @@ Spring Boot application responsible for user authentication and session manageme
 |---------|-------------|--------|
 | `/` | Home page | Public |
 | `/login` | Default Spring Security login page | Public |
-| `/dashboard` | Protected dashboard page with session counter | Authenticated users only |
+| `/dashboard` | Protected dashboard page with Redis-backed session counter | Authenticated users only |
 | `/logout` | Logout handled by Spring Security | Authenticated users only |
 
 ### Test credentials
@@ -34,7 +34,34 @@ username: admin
 password: password
 ```
 
-### Local run
+### Local Redis run
+
+```bash
+docker run -d --name session-redis -p 6379:6379 redis:7
+```
+
+If the container already exists:
+
+```bash
+docker start session-redis
+```
+
+Check Redis sessions:
+
+```bash
+docker exec -it session-redis redis-cli
+keys *
+```
+
+Expected keys:
+
+```text
+spring:session:sessions:...
+spring:session:expirations:...
+spring:session:index:...
+```
+
+### Local application run
 
 ```bash
 mvn spring-boot:run
@@ -46,4 +73,4 @@ mvn spring-boot:run
 http://localhost:8080
 ```
 
-At the current stage, the application has a public home page, default Spring Security login, and a protected dashboard page with a session-based visit counter.
+At the current stage, the application has a public home page, default Spring Security login, a protected dashboard page, and Redis-backed session storage.
