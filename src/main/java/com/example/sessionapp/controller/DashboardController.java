@@ -22,6 +22,7 @@ public class DashboardController {
         session.setAttribute("visits", visits);
 
         model.addAttribute("visits", visits);
+        model.addAttribute("sessionId", session.getId());
 
         return "dashboard";
     }
