@@ -17,6 +17,7 @@ Spring Boot application responsible for user authentication and session manageme
 - [x] Protected dashboard page
 - [x] Session counter
 - [x] Redis-based session storage
+- [x] Session ID display on dashboard
 
 ### Implemented backend endpoints
 
