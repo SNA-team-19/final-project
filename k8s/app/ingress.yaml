@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: session-app-ingress
 spec:
+  ingressClassName: nginx
   rules:
     - host: session.local
       http:

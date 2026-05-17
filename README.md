@@ -134,6 +134,7 @@ kubectl get svc
 
 ```bash
 minikube addons enable ingress
+minikube tunnel
 ```
 
 ### 6. Apply Ingress configuration

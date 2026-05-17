@@ -40,4 +40,4 @@ spec:
 
           env:
             - name: REDIS_HOST
-              value: redis-service
+              value: redis
