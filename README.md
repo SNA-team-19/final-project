@@ -101,6 +101,7 @@ http://localhost:8080
 
 ```bash
 minikube start
+minikube image load session-app
 ```
 
 ### 2. Deploy Redis
