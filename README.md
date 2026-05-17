@@ -130,58 +130,6 @@ kubectl get pods
 kubectl get svc
 ```
 
-### 5. Enable Ingress addon
-
-```bash
-minikube addons enable ingress
-minikube tunnel
-```
-
-### 6. Apply Ingress configuration
-
-```bash
-kubectl apply -f k8s/app/ingress.yaml # should be applied after kubectl apply -f k8s/app/
-```
-
-Check:
-
-```bash
-kubectl get ingress
-```
-
----
-
-### 7. Configure local hosts file
-
-Add Minikube IP to hosts file.
-
-Get Minikube IP:
-
-```bash
-minikube ip
-```
-
-Add entry:
-
-```text
-<minikube-ip> session.local
-```
-
-Example:
-
-```text
-192.168.49.2 session.local
-```
-
----
-
-### 8. Access application
-
-```text
-http://session.local
-```
-
----
 
 ## Health Checks
 
@@ -198,7 +146,7 @@ Available endpoints:
 Example:
 
 ```text
-http://session.local/actuator/health
+http://localhost:8080/actuator/health
 ```
 
 These endpoints are used by Kubernetes liveness and readiness probes.
@@ -278,7 +226,7 @@ Expected response:
 - [x] Application deployment in Kubernetes
 - [x] Kubernetes Service configuration
 - [x] Health probes
-- [x] NGINX Ingress
+- [ ] NGINX Ingress
 
 ---
 
