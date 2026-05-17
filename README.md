@@ -60,66 +60,16 @@ password: password
 
 ## Running Locally
 
-### 1. Start Redis container
+### 1. Build docker containers
 
 ```bash
-docker run -d --name session-redis -p 6379:6379 redis:7
-```
-
-If container already exists:
-
-```bash
-docker start session-redis
-```
-
-### 2. Run Spring Boot application
-
-```bash
-mvn spring-boot:run
+docker compose up --build
 ```
 
 Application available at:
 
 ```text
 http://localhost:8080
-```
-
-### 3. Check Redis session data
-
-Open Redis CLI:
-
-```bash
-docker exec -it session-redis redis-cli
-```
-
-Run:
-
-```bash
-keys *
-```
-
-Expected keys:
-
-```text
-spring:session:sessions:...
-spring:session:expirations:...
-spring:session:index:...
-```
-
----
-
-## Docker Build
-
-Build Docker image:
-
-```bash
-docker build -t session-app .
-```
-
-Run container:
-
-```bash
-docker run -p 8080:8080 session-app
 ```
 
 ---
@@ -132,14 +82,7 @@ docker run -p 8080:8080 session-app
 minikube start
 ```
 
-### 2. Use Minikube Docker daemon
-
-```bash
-eval $(minikube docker-env)
-docker build -t session-app .
-```
-
-### 3. Deploy Redis
+### 2. Deploy Redis
 
 ```bash
 kubectl apply -f k8s/redis/

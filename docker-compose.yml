@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7
+    container_name: session-redis
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    container_name: session-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
