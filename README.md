@@ -16,6 +16,7 @@ The main goal is to show that user sessions remain persistent even if an applica
 - Docker
 - Kubernetes (Minikube)
 - Maven
+- NGINX Ingress
 
 ---
 
@@ -35,7 +36,27 @@ The main goal is to show that user sessions remain persistent even if an applica
 ## Project Structure
 
 ```text
-to be added later
+redis-session-k8s-project/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   └── resources/
+│
+├── k8s/
+│   ├── redis/
+│   │   ├── redis-deployment.yaml
+│   │   └── redis-service.yaml
+│   │
+│   └── app/
+│       ├── app-deployment.yaml
+│       ├── app-service.yaml
+│       └── ingress.yaml
+│
+├── Dockerfile
+├── docker-compose.yml
+├── pom.xml
+└── README.md
 ```
 
 ---
@@ -108,17 +129,77 @@ kubectl get pods
 kubectl get svc
 ```
 
-### 5. Access application using port-forward
+### 5. Enable Ingress addon
 
 ```bash
-kubectl port-forward service/session-app-service 8080:80
+minikube addons enable ingress
 ```
 
-Application available at:
+### 6. Apply Ingress configuration
+
+```bash
+kubectl apply -f k8s/app/ingress.yaml # should be applied after kubectl apply -f k8s/app/
+```
+
+Check:
+
+```bash
+kubectl get ingress
+```
+
+---
+
+### 7. Configure local hosts file
+
+Add Minikube IP to hosts file.
+
+Get Minikube IP:
+
+```bash
+minikube ip
+```
+
+Add entry:
 
 ```text
-http://localhost:8080
+<minikube-ip> session.local
 ```
+
+Example:
+
+```text
+192.168.49.2 session.local
+```
+
+---
+
+### 8. Access application
+
+```text
+http://session.local
+```
+
+---
+
+## Health Checks
+
+Spring Boot Actuator is used for Kubernetes health monitoring.
+
+Available endpoints:
+
+```text
+/actuator/health
+/actuator/health/liveness
+/actuator/health/readiness
+```
+
+Example:
+
+```text
+http://session.local/actuator/health
+```
+
+These endpoints are used by Kubernetes liveness and readiness probes.
 
 ---
 
@@ -168,6 +249,22 @@ This confirms that session data is stored in Redis instead of application memory
 
 ---
 
+### Health check test
+
+Open:
+
+```text
+http://session.local/actuator/health
+```
+
+Expected response:
+
+```json
+{"status":"UP"}
+```
+
+---
+
 ## Current Project Status
 
 - [x] Spring Boot application
@@ -178,8 +275,8 @@ This confirms that session data is stored in Redis instead of application memory
 - [x] Redis deployment in Kubernetes
 - [x] Application deployment in Kubernetes
 - [x] Kubernetes Service configuration
-- [ ] Health probes
-- [ ] NGINX Ingress
+- [x] Health probes
+- [x] NGINX Ingress
 
 ---
 
