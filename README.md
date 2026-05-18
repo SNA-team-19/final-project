@@ -16,7 +16,6 @@ The main goal is to show that user sessions remain persistent even if an applica
 - Docker
 - Kubernetes (Minikube)
 - Maven
-- NGINX Ingress
 
 ---
 
@@ -50,8 +49,7 @@ redis-session-k8s-project/
 │   │
 │   └── app/
 │       ├── app-deployment.yaml
-│       ├── app-service.yaml
-│       └── ingress.yaml
+│       └── app-service.yaml
 │
 ├── Dockerfile
 ├── docker-compose.yml
@@ -130,6 +128,7 @@ kubectl get pods
 kubectl get svc
 ```
 
+---
 
 ## Health Checks
 
@@ -143,13 +142,21 @@ Available endpoints:
 /actuator/health/readiness
 ```
 
-Example:
+These endpoints are used by Kubernetes liveness and readiness probes.
+
+### Health check test
+
+Open:
 
 ```text
-http://localhost:8080/actuator/health
+http://session.local/actuator/health
 ```
 
-These endpoints are used by Kubernetes liveness and readiness probes.
+Expected response:
+
+```json
+{"status":"UP"}
+```
 
 ---
 
@@ -199,22 +206,6 @@ This confirms that session data is stored in Redis instead of application memory
 
 ---
 
-### Health check test
-
-Open:
-
-```text
-http://session.local/actuator/health
-```
-
-Expected response:
-
-```json
-{"status":"UP"}
-```
-
----
-
 ## Current Project Status
 
 - [x] Spring Boot application
@@ -226,7 +217,6 @@ Expected response:
 - [x] Application deployment in Kubernetes
 - [x] Kubernetes Service configuration
 - [x] Health probes
-- [ ] NGINX Ingress
 
 ---
 
